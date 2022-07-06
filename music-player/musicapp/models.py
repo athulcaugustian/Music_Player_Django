@@ -18,6 +18,7 @@ class Song(models.Model):
     language = models.CharField(max_length=20,choices=Language_Choice)
     song_img = models.FileField()
     year = models.IntegerField()
+    lyrics=models.TextField()
     singer = models.CharField(max_length=200)
     song_file = models.FileField()
 
@@ -41,3 +42,8 @@ class Favourite(models.Model):
 class Recent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
+
+# class comments(models.Model):
+#     song = models.ForeignKey(Song, on_delete=models.CASCADE, default=1)
+#     user=models.ForeignKey(User,on_delete=models.CASCADE)
+#     review=models.CharField(max_length=200)

@@ -4,11 +4,18 @@ from .models import *
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import csv
+import numpy as np
+import pandas as pd
+from typing import List, Dict
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 # Create your views here.
 def index(request):
-
+    exportcsv()
+    
     #Display recent songs
     if not request.user.is_anonymous :
         recent = list(Recent.objects.filter(user=request.user).values('song_id').order_by('-id'))
@@ -35,8 +42,20 @@ def index(request):
     else:
         first_time = True
         last_played_song = Song.objects.get(id=7)
+        
+   
+    df=pd.read_csv('ml.csv',encoding='latin1')
+    p=df[df['id'] ==last_played_song.id ].index
+    print(p[0])
 
+    # sng.set_index('id', drop=True, append=False, inplace=False, verify_integrity=False)
+
+    #display suggestion
+    p1=suggestion(p[0])
+    suggested=Song.objects.filter(id__in=p1)
+    
     #Display all songs
+    
     songs = Song.objects.all()
 
     #Display few songs on home page
@@ -70,6 +89,7 @@ def index(request):
     context = {
         'all_songs':indexpage_songs,
         'recent_songs': recent_songs,
+        'suggested':suggested,
         'hindi_songs':indexpage_hindi_songs,
         'english_songs':indexpage_english_songs,
         'malayalam_songs':indexpage_malayalam_songs,
@@ -353,3 +373,70 @@ def favourite(request):
         messages.success(request, "Removed from favourite!")
     context = {'songs': songs}
     return render(request, 'musicapp/favourite.html', context=context)
+
+def exportcsv():
+    songs = Song.objects.all()
+    f = open('ml.csv', 'w')
+    writer=csv.writer(f)
+    writer.writerow(['artist','id', 'lyrics'])
+    studs = songs.values_list('album','id', 'lyrics')
+    for std in studs:
+        writer.writerow(std)
+    return True
+
+class ContentBasedRecommender:
+    def __init__(self, matrix):
+        self.matrix_similar = matrix
+
+    def _print_message(self, song, recom_song):
+        rec_items = len(recom_song)
+        sng=[]
+
+        print(f'The {rec_items} recommended songs for {song} are:')
+        for i in range(rec_items):
+            print(f"Number {i+1}:")
+            print(f"{recom_song[i][1]} by {recom_song[i][2]} with {round(recom_song[i][0], 3)} similarity score") 
+            print("--------------------")
+            sng.append(recom_song[i][1])
+        return(sng)
+    def recommend(self, recommendation):
+        # Get song to find recommendations for
+        song = recommendation['song']
+        # Get number of songs to recommend
+        number_songs = recommendation['number_songs']
+        # Get the number of songs most similars from matrix similarities
+        recom_song = self.matrix_similar[song][:number_songs]
+        # print each item
+        p=self._print_message(song=song, recom_song=recom_song)
+        return p
+
+def suggestion(p):
+    songs=pd.read_csv('ml.csv',encoding='latin1')
+    tfidf = TfidfVectorizer(analyzer='word', stop_words='english')
+    lyrics_matrix = tfidf.fit_transform(songs['lyrics'])
+    cosine_similarities = cosine_similarity(lyrics_matrix) 
+    similarities = {}
+    for i in range(len(cosine_similarities)):
+        # Now we'll sort each element in cosine_similarities and get the indexes of the songs. 
+        similar_indices = cosine_similarities[i].argsort()[:-50:-1] 
+        # After that, we'll store in similarities each name of the 50 most similar songs.
+        # Except the first one that is the same song.
+        print(songs['id'].iloc[p],p)
+        similarities[songs['id'].iloc[i]] = [(cosine_similarities[i][x], songs['id'][x], songs['artist'][x]) for x in similar_indices][1:]
+    recommedations = ContentBasedRecommender(similarities)
+    recommendation = {
+    "song": songs['id'].iloc[p],
+    "number_songs": 6}
+    p=recommedations.recommend(recommendation)
+    return p
+
+
+def Comments(request):
+    if request.method == "POST":
+            song_id = list(request.POST.keys())[1]
+            review=request.POST["message"]
+            q = comments(user=request.user, song=song_id, review=review)
+            q.save()
+    
+
+
