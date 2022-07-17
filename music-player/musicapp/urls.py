@@ -11,13 +11,14 @@ urlpatterns = [
     path('favourite/', views.favourite, name='favourite'),
     path('all_songs/', views.all_songs, name='all_songs'),
     path('recent/', views.recent, name='recent'),
+    path('review/', views.review, name='review'),
     path('hindi_songs/', views.hindi_songs, name='hindi_songs'),
     path('english_songs/', views.english_songs, name='english_songs'),
     path('malayalam_songs/',views.malayalam_songs,name='malayalam_songs'),
     path('play/<int:song_id>/', views.play_song, name='play_song'),
     path('play_song/<int:song_id>/', views.play_song_index, name='play_song_index'),
     path('play_recent_song/<int:song_id>/', views.play_recent_song, name='play_recent_song'),
-
+    path('artistboard/',views.artist,name='artist'),
+    path('artistdetail/<int:song_id>/',views.artistdetail,name='artistdetail')
     
-
 ]

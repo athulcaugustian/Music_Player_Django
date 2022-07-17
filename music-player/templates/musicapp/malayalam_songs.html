@@ -3,6 +3,11 @@
 {% block title %} Malayalam Songs {% endblock title %}
 
 {% block body %}
+<style>
+  .hovereffect label {
+    font-weight: bold;
+  }
+</style>
 
 <br>
 <br>
@@ -40,7 +45,9 @@
           <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle"
               aria-hidden="true"></i></a>
         </div>
+        <label>{{song.name}}</label>
       </div>
+     
     </div>
     {% endfor %}
     {% endif %}

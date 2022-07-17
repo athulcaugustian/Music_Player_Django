@@ -6,6 +6,11 @@
 {% block body %} 
 
 <br>
+<style>
+  .col-md-2 label{
+    font-weight: bold;
+  }
+</style>
 <div class="container">
   <div class="col-md-13">
     <form id="searchform" class="form-horizontal" role="search" method="get" action=''>
@@ -47,7 +52,9 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
+     
       {% endfor %}
       <a href="{% url 'recent' %}" class="btn btn-primary float-right" style="height: 135px;"><center style="margin-top: 45px;">View all <i class="fa fa-arrow-right" aria-hidden="true"></i></center></a>
 
@@ -76,6 +83,7 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
       {% endfor %}
       
@@ -109,6 +117,7 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
       {% endfor %}
       {% endif %}
@@ -139,6 +148,7 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
       {% endfor %}
       {% endif %}
@@ -168,6 +178,7 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
       {% endfor %}
       {% endif %}
@@ -197,9 +208,12 @@
                 <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
              </div>
           </div>
+          <label>{{song.name}}</label>
       </div>
       {% endfor %}
       {% endif %}
+
+      
       {% if not query_search %}
       <a href="{% url 'english_songs' %}" class="btn btn-primary float-right" style="height: 135px;"><center style="margin-top: 45px;">View all <i class="fa fa-arrow-right" aria-hidden="true"></i></center></a>
       {% endif %}
@@ -207,6 +221,7 @@
 </div>
 <br>
 <br>
+
 <br>
 <br>
 <br>
@@ -220,11 +235,11 @@
             <a class="artist" style="margin-left: 15px;color:white">{{last_played.album}}</a>
          </div>
          <div class="bottom">
-          {% if first_time %}
-            <audio controls=""  name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
+                             {% if first_time %}
+            <audio controls=""  name="me" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
               {% else %}
-              <audio controls="" autoplay name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
-                {% endif %}
+              <audio controls="" autoplay name='' preload="none" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
+                    {% endif %}
           </div>
       </div>
     </div>

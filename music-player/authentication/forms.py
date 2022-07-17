@@ -2,10 +2,21 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth import authenticate
+import re
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
+def usr_name(value):
+	pattern = re.compile("^[a-zA-Z]{3,}$")
+	#"^[A-Za-z]\\w{5, 29}$"
+	if  len(value)>30 or len(value)<3:
+		raise ValidationError("Min 4 and Max 12 Characters")
+	if not pattern.match(value):
+		raise ValidationError("Only Alphabets")
+		
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate', 'placeholder': 'Enter Username'}))
+    username = forms.CharField(initial = "username",max_length = 12,validators=[usr_name])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password'}))
 
     def clean(self, *args, **kwargs):
@@ -24,7 +35,7 @@ class UserLoginForm(forms.Form):
 
 
 class RegistrationForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    username = forms.CharField(initial = "username",max_length = 12,validators=[usr_name])
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password'}))
     password2 = forms.CharField(
         label='Password confirmation',

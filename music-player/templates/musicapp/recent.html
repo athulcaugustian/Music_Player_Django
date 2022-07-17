@@ -3,6 +3,12 @@
 {% block title %} Recently Played {% endblock title %}
 
 {% block body %}
+
+<style>
+  .hovereffect label {
+    font-weight: bold;
+  }
+</style>
 <br>
 <div class="container">
 
@@ -18,7 +24,7 @@
         </div>
       </div>
     </div>
-  </form>  -->
+  </form>  
   <!-- <hr> -->
     {% if not query_search %}
   <header class="section-heading">
@@ -31,7 +37,7 @@
   </header>
   <hr>
   {% endif %}
-   -->
+   
   <!-- Song list -->
   <div class="row" style="margin-right: 65px;margin-left:-15px;">
     {% if recent_songs %}
@@ -46,8 +52,11 @@
           <a class="btn btn-outline-light mt-5 mx-1" href="{% url 'detail' song.id %}"><i class="fa fa-info-circle"
               aria-hidden="true"></i></a>
         </div>
+        <label>{{song.name}}</label>
       </div>
     </div>
+    
+
     {% endfor %}
     {% endif %}
   </div>

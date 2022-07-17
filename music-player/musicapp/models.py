@@ -43,7 +43,8 @@ class Recent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
-# class comments(models.Model):
-#     song = models.ForeignKey(Song, on_delete=models.CASCADE, default=1)
-#     user=models.ForeignKey(User,on_delete=models.CASCADE)
-#     review=models.CharField(max_length=200)
+class comment(models.Model):
+    song=models.ForeignKey(Song, on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    review=models.CharField(max_length=200)
+    

@@ -1,5 +1,7 @@
 from asyncio.windows_events import NULL
 from django.shortcuts import render, redirect, get_object_or_404
+
+import musicapp
 from .models import *
 from django.db.models import Q
 from django.contrib import messages
@@ -143,7 +145,7 @@ def english_songs(request):
     return render(request, 'musicapp/english_songs.html', context)
 
 
-        #01-07-22
+        #Malayalam songs
 
 def malayalam_songs(request):
 
@@ -234,7 +236,7 @@ def all_songs(request):
         search_query = request.GET.get('q')
         search_singer = request.GET.get('singers') or ''
         search_language = request.GET.get('languages') or ''
-        filtered_songs = songs.filter(Q(name__icontains=search_query)).filter(Q(language__icontains=search_language)).filter(Q(singer__icontains=search_singer)).distinct()
+        filtered_songs = songs.filter(Q(name__startswith=search_query)).filter(Q(language__icontains=search_language)).filter(Q(singer__icontains=search_singer)).distinct()
         context = {
         'songs': filtered_songs,
         'last_played':last_played_song,
@@ -258,6 +260,7 @@ def recent(request):
     
     #Last played song
     last_played_list = list(Recent.objects.values('song_id').order_by('-id'))
+     
     if last_played_list:
         last_played_id = last_played_list[0]['song_id']
         last_played_song = Song.objects.get(id=last_played_id)
@@ -291,6 +294,10 @@ def recent(request):
 @login_required(login_url='login')
 def detail(request, song_id):
     songs = Song.objects.filter(id=song_id).first()
+ 
+   
+
+    
 
     # Add data to recent database
     if list(Recent.objects.filter(song=songs,user=request.user).values()):
@@ -336,6 +343,10 @@ def detail(request, song_id):
 
     context = {'songs': songs, 'playlists': playlists, 'is_favourite': is_favourite,'last_played':last_played_song}
     return render(request, 'musicapp/detail.html', context=context)
+
+   
+
+
 
 
 def mymusic(request):
@@ -431,12 +442,43 @@ def suggestion(p):
     return p
 
 
-def Comments(request):
+def review(request):
     if request.method == "POST":
-            song_id = list(request.POST.keys())[1]
+            # song_id = list(request.POST.keys())[1]
             review=request.POST["message"]
-            q = comments(user=request.user, song=song_id, review=review)
+            song_id=int(request.POST["sid"])
+            u_id=int(request.POST["uid"])
+            s=song_id
+            
+            p=User.objects.get(id=u_id)
+            song_id=Song.objects.get(id=song_id)
+            
+            q = comment()
+            q.user=p
+            q.song=song_id
+            q.review=review
             q.save()
-    
+    return redirect(detail,s)
 
+def artist(request):
+    
+    artist_song = Song.objects.filter(singer='Justin Bieber')
+    context={
+            "artist_song":artist_song
+        }
+    return render(request,'musicapp/artist.html',context)
+
+def artistdetail(request,song_id):
+    songs=Song.objects.get(id=song_id)
+    print(songs)
+    rw = comment.objects.filter(song=songs)
+    if rw.count()==0:
+        rw=False
+    print(rw)
+    
+    context={
+        "songs":songs,
+        "review":rw
+       }
+    return render(request,'musicapp/artistdetail.html',context)
 

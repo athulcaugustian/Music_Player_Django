@@ -7,7 +7,6 @@
         font-size: 25px;
         color: red;
     }
-   
 </style>
 {% endblock header %}
 {% block body %}
@@ -48,10 +47,13 @@
                         <source src="{{ songs.song_file.url }}" type="audio/mpeg">
                     </audio>   -->
 
+                    
+
                     <form method="post">
                         {% csrf_token %}
                         <button style="float: left;" type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#exampleModal" data-whatever="@mdo"><i class="fa fa-plus" aria-hidden="true"></i> Create New Playlist</button>
+                            data-target="#exampleModal" data-whatever="@mdo"><i class="fa fa-plus"
+                                aria-hidden="true"></i> Create New Playlist</button>
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -100,13 +102,16 @@
                         <span class="d-flex align-items-center mt-2 ml-2">
                             <!-- <i class="heart fa fa-heart my-auto"></i> -->
                             <button type="submit" name="rm-fav" class="btn btn-danger btn-block"
-                                style="width: 358px;margin-left:-8px;background-color: red;">Remove from Favourites</button>
+                                style="width: 358px;margin-left:-8px;background-color: red;">Remove from
+                                Favourites</button>
                         </span>
                         {% else %}
                         <span class="d-flex align-items-center mt-2 ml-2">
                             <!-- <i class="heart fa fa-heart my-auto"></i> -->
                             <button type="submit" name="add-fav" class="btn btn-danger btn-block"
-                                style="width: 358px;margin-left:-8px;background-color: red;"><i class="heart fa fa-heart-o my-auto" style="color:white"></i> Add to Favourites</button>
+                                style="width: 358px;margin-left:-8px;background-color: red;"><i
+                                    class="heart fa fa-heart-o my-auto" style="color:white"></i> Add to
+                                Favourites</button>
 
                             <!-- <input type="submit" id="favbtn" class="btn btn-primary" name="add-fav" value="Add to Favourites"> -->
                         </span>
@@ -115,93 +120,100 @@
                     </form>
 
                     <!-- Start All Pages -->
-	
-	<!-- End All Pages -->
-	
-	<!-- Start Contact -->
-    <form method="POST"
-	<div class="col-md-9" >
-        <div class="form-group"> 
-            <textarea class="form-control" name ="message" id="msge" placeholder="  what do you think" rows="4" required></textarea>
-            <p style="color:red" name="message"></p>
-        </div>
-        <div class="submit-button text-center">
-            <button class="btn btn-common" name="msg" id="submit" type="submit">Send Review</button>
-             
-            <div class="clearfix"></div> 
-        </div>
-    </div>
-</div>            
-</center>
-</div>
-</div>
 
-</div>
-</div>
-</form>
+                    <!-- End All Pages -->
 
-	<!-- End Contact info -->
-	
-	<!-- Start Footer -->
-	<footer class="footer-area bg-f">
-	
-		
-		<div class="copyright">
-			<div class="container">
-				<div class="row">
-					
-				</div>
-			</div>
-		</div>
-		
-	</footer>
-	<!-- End Footer -->
-	
-	<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
+                    <!-- Start Contact -->
+                    <form method="POST" action="/review/">
+                        {% csrf_token %}
 
-	<!-- ALL JS FILES -->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-    <!-- ALL PLUGINS -->
-	
-	<script src="js/jquery.superslides.min.js"></script>
-	<script src="js/images-loded.min.js"></script>
-	<script src="js/isotope.min.js"></script>
-	<script src="js/baguetteBox.min.js"></script>
-	<script src="js/jquery.mapify.js"></script>
-	<script src="js/form-validator.min.js"></script>
-    <script src="js/contact-form-script.js"></script>
-    <script src="js/custom.js"></script>
-	<script>
-		$('.map-full').mapify({
-			points: [
-				{
-					lat: 40.7143528,
-					lng: -74.0059731,
-					marker: true,
-					title: 'Marker title',
-					infoWindow: 'Live Dinner Restaurant'
-				}
-			]
-		});	
-	</script>
-	  <script>
-                      function alrt() {
-                        alert("This feild can't be edited");
-                      }
-                    </script>
-</body>
-
-</html>
-                    
-
-
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="hidden" value="{{request.user.id}}" name="uid">
+                                <input type="hidden" value="{{songs.id}}" name="sid">
+                                <textarea class="form-control" name="message" id="msge"
+                                    placeholder="  what do you think" rows="4" required></textarea>
+                                <p style="color:red" name="message"></p>
+                            </div>
+                            <div class="submit-button text-center">
+                                <button class="btn btn-common" name="msg" id="submit" type="submit">Send Review</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
 
                 </div>
+
+                </center>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- End Contact info -->
+
+<!-- Start Footer -->
+<footer class="footer-area bg-f">
+
+
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+
             </div>
         </div>
     </div>
+
+</footer>
+<!-- End Footer -->
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="fa fa-paper-plane-o"
+        aria-hidden="true"></i></a>
+
+<!-- ALL JS FILES -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- ALL PLUGINS -->
+
+<script src="js/jquery.superslides.min.js"></script>
+<script src="js/images-loded.min.js"></script>
+<script src="js/isotope.min.js"></script>
+<script src="js/baguetteBox.min.js"></script>
+<script src="js/jquery.mapify.js"></script>
+<script src="js/form-validator.min.js"></script>
+<script src="js/contact-form-script.js"></script>
+<script src="js/custom.js"></script>
+<script>
+    $('.map-full').mapify({
+        points: [
+            {
+                lat: 40.7143528,
+                lng: -74.0059731,
+                marker: true,
+                title: 'Marker title',
+                infoWindow: 'Live Dinner Restaurant'
+            }
+        ]
+    });	
+</script>
+<script>
+    function alrt() {
+        alert("This feild can't be edited");
+    }
+</script>
+</body>
+
+</html>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <footer class="footer">
@@ -216,11 +228,11 @@
             <div class="bottom">
                 <audio controls="" _autoplay="" name="media"
                     style="margin-left: 20px;margin-bottom: 10px;width: 1245px;height:30px">
-                    <source src="{{last_played.song_file.url}}" type="audio/mpeg"></audio>
+                    <source src="{{last_played.song_file.url}}" type="audio/mpeg">
+                </audio>
             </div>
         </div>
     </div>
 </footer>
 
 {% endblock body %}
-

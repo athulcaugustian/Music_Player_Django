@@ -3,6 +3,12 @@
 {% block title %} All Songs {% endblock title %}
 {% block body %}
 
+<style>
+  .hovereffect label{
+    font-weight:bold
+  }
+</style>
+
 <br>
 <div class="container">
   <div class="col-md-13">
@@ -65,6 +71,7 @@
               aria-hidden="true"></i></a>
 
         </div>
+        <label>{{song.name}}</label>
       </div>
     </div>
     {% endfor %}
@@ -87,9 +94,9 @@
        </div>
        <div class="bottom">
         {% if first_time %}
-          <audio controls=""  name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
+          <audio controls=""  name="me"  style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
         {% else %}
-          <audio controls="" autoplay name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
+          <audio controls=""  autoplay name='' preload="none" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.song_file.url}}" type="audio/mpeg" ></audio>
         {% endif %}
         </div>
     </div>
