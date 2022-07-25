@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 
+from authentication.models import CustomUser
+#from django.contrib.auth.models import User
 
 # Create your models here.
 class Song(models.Model):
@@ -27,24 +28,24 @@ class Song(models.Model):
 
 
 class Playlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
     playlist_name = models.CharField(max_length=200)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
 
 class Favourite(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     is_fav = models.BooleanField(default=False)
 
 
 class Recent(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
 class comment(models.Model):
     song=models.ForeignKey(Song, on_delete=models.CASCADE)
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
     review=models.CharField(max_length=200)
     

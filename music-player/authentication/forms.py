@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate
 import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from .models import CustomUser
+
+# from authentication.models import CustomUser
 
 def usr_name(value):
 	pattern = re.compile("^[a-zA-Z]{3,}$")
@@ -36,6 +39,7 @@ class UserLoginForm(forms.Form):
 
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(initial = "username",max_length = 12,validators=[usr_name])
+
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password'}))
     password2 = forms.CharField(
         label='Password confirmation',
@@ -43,7 +47,7 @@ class RegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'placeholder': 'Re Enter Password'}))
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'password1', 'password2', ]
 
     def save(self, commit=True):

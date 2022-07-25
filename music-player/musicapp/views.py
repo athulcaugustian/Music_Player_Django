@@ -1,11 +1,14 @@
 from asyncio.windows_events import NULL
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.conf import settings
+# User = settings.AUTH_USER_MODEL
 import musicapp
 from .models import *
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth import get_user_model as user_model
 from django.contrib.auth.decorators import login_required
+User = user_model()
 import csv
 import numpy as np
 import pandas as pd
@@ -15,6 +18,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 # Create your views here.
+
+
 def index(request):
     exportcsv()
     
@@ -39,11 +44,11 @@ def index(request):
             last_played_song = Song.objects.get(id=last_played_id)
         else:
             first_time = True
-            last_played_song = Song.objects.get(id=7)
+            last_played_song = Song.objects.get(id=1)
 
     else:
         first_time = True
-        last_played_song = Song.objects.get(id=7)
+        last_played_song = Song.objects.get(id=1)
         
    
     df=pd.read_csv('ml.csv',encoding='latin1')
@@ -112,7 +117,7 @@ def hindi_songs(request):
         last_played_id = last_played_list[0]['song_id']
         last_played_song = Song.objects.get(id=last_played_id)
     else:
-        last_played_song = Song.objects.get(id=7)
+        last_played_song = Song.objects.get(id=1)
 
     query = request.GET.get('q')
 
@@ -135,7 +140,7 @@ def english_songs(request):
         last_played_id = last_played_list[0]['song_id']
         last_played_song = Song.objects.get(id=last_played_id)
     else:
-        last_played_song = Song.objects.get(id=7)
+        last_played_song = Song.objects.get(id=1)
 
     query = request.GET.get('q')
 
@@ -157,7 +162,7 @@ def malayalam_songs(request):
         last_played_id=last_played_list[0]['song_id']
         last_played_song=Song.objects.get(id=last_played_id)
     else:
-        last_played_song = Song.objects.get(id=7)
+        last_played_song = Song.objects.get(id=1)
 
     query = request.GET.get('q')
 
@@ -312,7 +317,7 @@ def detail(request, song_id):
         last_played_id = last_played_list[0]['song_id']
         last_played_song = Song.objects.get(id=last_played_id)
     else:
-        last_played_song = Song.objects.get(id=7)
+        last_played_song = Song.objects.get(id=1)
 
 
     playlists = Playlist.objects.filter(user=request.user).values('playlist_name').distinct
